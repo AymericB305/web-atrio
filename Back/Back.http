@@ -1,6 +1,47 @@
 @Back_HostAddress = http://localhost:5049
+@People_URL = {{Back_HostAddress}}/people
 
-GET {{Back_HostAddress}}/weatherforecast/
+GET {{People_URL}}
 Accept: application/json
 
 ###
+
+POST {{People_URL}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "LastName": "Breton",
+  "FirstName": "Aymeric",
+  "BirthDate": "1998-05-03"
+}
+
+###
+
+POST {{People_URL}}/1/jobs
+Accept: application/json
+Content-Type: application/json
+
+{
+  "CompanyName": "WebAtrio2",
+  "Position": "Software Engineer",
+  "StartDate": "2022-06-01",
+  "EndDate": null
+}
+
+###
+
+GET {{People_URL}}/1/jobs
+Accept: application/json
+Content-Type: application/json
+
+{
+  "StartDate": "2012-01-01",
+  "EndDate": "2025-03-09"
+}
+
+###
+
+GET {{People_URL}}/by-company/WebAtrio2
+Accept: application/json
+Content-Type: application/json

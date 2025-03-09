@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[Job]
+(
+	[Id] INT IDENTITY(1,1) PRIMARY KEY,
+    [CompanyName] NVARCHAR(255) NOT NULL,
+    [Position] NVARCHAR(255) NOT NULL
+)
