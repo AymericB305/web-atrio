@@ -1,0 +1,120 @@
+<p-table [value]="people()">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Prénom</th>
+      <th>Nom</th>
+      <th>Age</th>
+      <th>Emplois actuels</th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-person>
+    <tr>
+      <td>{{ person.firstName }}</td>
+      <td>{{ person.lastName }}</td>
+      <td>{{ person.age }}</td>
+      <td>
+        <p-table [value]="person.currentJobs" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Entreprise</th>
+              <th>Rôle</th>
+              <th>Début</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-job>
+            <tr>
+              <td>{{ job.companyName }}</td>
+              <td>{{ job.position }}</td>
+              <td>{{ job.startDate | date }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </td>
+      <td>
+        <button pButton icon="pi pi-plus" label="Ajouer un emploi" (click)="openAddJobDialog(person)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<button pButton label="Ajouter une personne" icon="pi pi-plus" (click)="addPersonDialog = true"></button>
+
+<button pButton label="Chercher par emploi" icon="pi pi-search" (click)="getByCompanyDialog = true; this.company.name = ''"></button>
+
+<p-dialog header="Ajouter une personne" [(visible)]="addPersonDialog" [modal]="true" [closable]="false">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="firstName">Prénom</label>
+      <input id="firstName" type="text" pInputText [(ngModel)]="newPerson.firstName" />
+    </div>
+    <div class="p-field">
+      <label for="lastName">Nom</label>
+      <input id="lastName" type="text" pInputText [(ngModel)]="newPerson.lastName" />
+    </div>
+    <div class="p-field">
+      <label for="birthDate">Date de naissance</label>
+      <p-datePicker id="birthDate" [(ngModel)]="newPerson.birthDate" dateFormat="yy-mm-dd" appendTo="body"></p-datePicker>
+    </div>
+    <p-footer>
+      <button type="button" pButton label="Annuler" icon="pi pi-times" (click)="addPersonDialog = false"></button>
+      <button type="button" pButton label="Ajouter" icon="pi pi-check" (click)="addPerson()"></button>
+    </p-footer>
+  </div>
+</p-dialog>
+
+<p-dialog header="Ajouter un emploi" [(visible)]="addJobDialog" [modal]="true" [closable]="false">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="companyName">Entreprise</label>
+      <input id="companyName" type="text" pInputText [(ngModel)]="newJob.companyName" />
+    </div>
+    <div class="p-field">
+      <label for="position">Rôle</label>
+      <input id="position" type="text" pInputText [(ngModel)]="newJob.position" />
+    </div>
+    <div class="p-field">
+      <label for="startDate">Début</label>
+      <p-date-picker id="startDate" [(ngModel)]="newJob.startDate" dateFormat="yy-mm-dd" appendTo="body"></p-date-picker>
+    </div>
+    <div class="p-field">
+      <label for="endDate">Fin (Optionel)</label>
+      <p-datePicker id="endDate" [(ngModel)]="newJob.endDate" dateFormat="yy-mm-dd" appendTo="body"></p-datePicker>
+    </div>
+    <p-footer>
+      <button type="button" pButton label="Annuler" icon="pi pi-times" (click)="addJobDialog = false"></button>
+      <button type="button" pButton label="Ajouter" icon="pi pi-check" (click)="addJob()"></button>
+    </p-footer>
+  </div>
+</p-dialog>
+
+<p-dialog header="Chercher par emploi" [(visible)]="getByCompanyDialog" [modal]="true" [closable]="false">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="companyName">Entreprise</label>
+      <input id="companyName" type="text" pInputText [(ngModel)]="company.name" />
+    </div>
+
+    <p-table [value]="getByCompanyResult">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Age</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-person>
+        <tr>
+          <td>{{ person.firstName }}</td>
+          <td>{{ person.lastName }}</td>
+          <td>{{ person.age }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    
+    <p-footer>
+      <button type="button" pButton label="Annuler" icon="pi pi-times" (click)="getByCompanyDialog = false"></button>
+      <button type="button" pButton label="Chercher" icon="pi pi-search" (click)="getByCompany()"></button>
+    </p-footer>
+  </div>
+</p-dialog>
