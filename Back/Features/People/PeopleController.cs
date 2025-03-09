@@ -99,14 +99,15 @@ public class PeopleController : ControllerBase
         var job = await _context.Jobs
             .Include(j => j.PersonJobs)
                 .ThenInclude(pj => pj.Person)
-            .FirstOrDefaultAsync(j => j.CompanyName == companyName);
+            .Where(j => j.CompanyName == companyName)
+            .ToListAsync();
 
         if (job == null)
         {
             return NotFound("Entreprise non trouvée.");
         }
 
-        var people = job.PersonJobs
+        var people = job.SelectMany(j => j.PersonJobs)
             .Select(j => j.Person)
             .Distinct();
 
